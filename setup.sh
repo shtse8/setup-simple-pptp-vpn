@@ -21,6 +21,7 @@
 #    2014-03-23: Added apt-get update.
 #    2014-09-18: Add help, allow custom username and password, thanks to dileep-p
 #    2015-01-25: Change external ip provider, thanks to theroyalstudent
+#    2019-04-09: Added iptables update.
 
 printhelp() {
 
@@ -63,6 +64,11 @@ apt-get -y install pptpd || {
   exit 1
 }
 
+apt-get -y install iptables || {
+  echo "Could not install iptables" 
+  exit 1
+}
+
 #ubuntu has exit 0 at the end of the file.
 sed -i '/^exit 0/d' /etc/rc.local
 
@@ -87,10 +93,11 @@ LEN=$(echo ${#PASS})
 
 if [ -z "$PASS" ] || [ $LEN -lt 8 ] || [ -z "$NAME"]
 then
-   P1=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
-   P2=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
-   P3=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
-   PASS="$P1-$P2-$P3"
+   #P1=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   #P2=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   #P3=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   #PASS="$P1-$P2-$P3"
+   PASS="vpn123"
 fi
 
 if [ -z "$NAME" ]
